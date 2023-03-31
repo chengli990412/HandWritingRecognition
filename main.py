@@ -6,7 +6,7 @@ from UIMain import Ui_MainWindow
 from DeepLearning import DeepLearning
 
 
-# 版本：1.0.0.7
+# 版本：1.0.0.1
 # 更新日期：20230331
 
 
