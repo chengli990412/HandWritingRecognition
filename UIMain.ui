@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>733</width>
+    <height>558</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>基于特征处理的手写数字识别</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <widget class="QTextEdit" name="textEdit">
+    <property name="geometry">
+     <rect>
+      <x>500</x>
+      <y>0</y>
+      <width>231</width>
+      <height>531</height>
+     </rect>
+    </property>
+    <property name="readOnly">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="Button_ReadModel">
+    <property name="geometry">
+     <rect>
+      <x>370</x>
+      <y>356</y>
+      <width>100</width>
+      <height>50</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>模型读取</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="Button_Train">
+    <property name="geometry">
+     <rect>
+      <x>370</x>
+      <y>148</y>
+      <width>100</width>
+      <height>50</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>神经网络训练</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="Button_SaveModel">
+    <property name="geometry">
+     <rect>
+      <x>370</x>
+      <y>304</y>
+      <width>100</width>
+      <height>50</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>模型保存</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="Button_StopTrain">
+    <property name="geometry">
+     <rect>
+      <x>370</x>
+      <y>252</y>
+      <width>100</width>
+      <height>50</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>训练强制停止</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="Button_LoadModel">
+    <property name="geometry">
+     <rect>
+      <x>370</x>
+      <y>200</y>
+      <width>100</width>
+      <height>50</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>网络模型导入</string>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
