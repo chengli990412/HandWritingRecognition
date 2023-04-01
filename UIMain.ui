@@ -6,94 +6,136 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>733</width>
-    <height>558</height>
+    <width>929</width>
+    <height>751</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>基于特征处理的手写数字识别</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QTextEdit" name="textEdit">
+   <widget class="QLabel" name="label">
     <property name="geometry">
      <rect>
-      <x>500</x>
-      <y>0</y>
-      <width>231</width>
-      <height>531</height>
-     </rect>
-    </property>
-    <property name="readOnly">
-     <bool>true</bool>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="Button_ReadModel">
-    <property name="geometry">
-     <rect>
-      <x>370</x>
-      <y>356</y>
-      <width>100</width>
-      <height>50</height>
+      <x>120</x>
+      <y>110</y>
+      <width>54</width>
+      <height>12</height>
      </rect>
     </property>
     <property name="text">
-     <string>模型读取</string>
+     <string>TextLabel</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="Button_Train">
+   <widget class="QTabWidget" name="tabWidget">
     <property name="geometry">
      <rect>
-      <x>370</x>
-      <y>148</y>
-      <width>100</width>
-      <height>50</height>
+      <x>30</x>
+      <y>190</y>
+      <width>531</width>
+      <height>481</height>
      </rect>
     </property>
-    <property name="text">
-     <string>神经网络训练</string>
+    <property name="currentIndex">
+     <number>0</number>
     </property>
-   </widget>
-   <widget class="QPushButton" name="Button_SaveModel">
-    <property name="geometry">
-     <rect>
-      <x>370</x>
-      <y>304</y>
-      <width>100</width>
-      <height>50</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>模型保存</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="Button_StopTrain">
-    <property name="geometry">
-     <rect>
-      <x>370</x>
-      <y>252</y>
-      <width>100</width>
-      <height>50</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>训练强制停止</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="Button_LoadModel">
-    <property name="geometry">
-     <rect>
-      <x>370</x>
-      <y>200</y>
-      <width>100</width>
-      <height>50</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>网络模型导入</string>
-    </property>
+    <widget class="QWidget" name="tab">
+     <attribute name="title">
+      <string>模型训练</string>
+     </attribute>
+     <widget class="QPushButton" name="Button_Train">
+      <property name="geometry">
+       <rect>
+        <x>50</x>
+        <y>30</y>
+        <width>151</width>
+        <height>141</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>神经网络训练</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="Button_LoadModel">
+      <property name="geometry">
+       <rect>
+        <x>220</x>
+        <y>140</y>
+        <width>200</width>
+        <height>100</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>网络模型导入</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="Button_SaveModel">
+      <property name="geometry">
+       <rect>
+        <x>300</x>
+        <y>20</y>
+        <width>200</width>
+        <height>100</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>模型保存</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="Button_StopTrain">
+      <property name="geometry">
+       <rect>
+        <x>40</x>
+        <y>280</y>
+        <width>200</width>
+        <height>100</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>训练强制停止</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="Button_ReadModel">
+      <property name="geometry">
+       <rect>
+        <x>270</x>
+        <y>280</y>
+        <width>200</width>
+        <height>100</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>模型读取</string>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="tab_2">
+     <attribute name="title">
+      <string>模型识别</string>
+     </attribute>
+    </widget>
    </widget>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
+  <widget class="QDockWidget" name="dockWidget">
+   <property name="windowTitle">
+    <string>Log栏</string>
+   </property>
+   <attribute name="dockWidgetArea">
+    <number>1</number>
+   </attribute>
+   <widget class="QWidget" name="dockWidgetContents">
+    <layout class="QGridLayout" name="gridLayout_26">
+     <item row="0" column="0">
+      <widget class="QTextEdit" name="textEdit">
+       <property name="readOnly">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+  </widget>
  </widget>
  <resources/>
  <connections/>
