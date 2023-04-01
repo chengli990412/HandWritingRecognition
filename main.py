@@ -1,13 +1,13 @@
 import sys
-
+from  datetime import datetime
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QApplication, QWidget, QFileDialog
 from UIMain import Ui_MainWindow
 from DeepLearning import DeepLearning
 
 
-# 版本：1.0.0.1
-# 更新日期：20230331
+# 版本：1.0.0.2
+# 更新日期：20230332
 
 
 class MyClass(QWidget, Ui_MainWindow):
@@ -27,10 +27,13 @@ class MyClass(QWidget, Ui_MainWindow):
         self.setWindowIcon(QIcon('./logo.ico'))
 
     def run(self):
-        self.dl.run()
+        self.dl.start()
 
+    # Log记录
     def write_text(self, str):
-        self.textEdit.append(str)
+        now=datetime.now()
+        Mes=now.strftime("%H:%M:%S")+str
+        self.textEdit.append(Mes)
 
 
 if __name__ == '__main__':

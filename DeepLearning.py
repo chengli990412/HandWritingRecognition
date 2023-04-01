@@ -2,21 +2,23 @@ import numpy as np
 import os
 import gzip
 import tensorflow as tf
-from PyQt5.QtCore import QObject,pyqtSignal
+from PyQt5.QtCore import QObject, pyqtSignal, QThread,QMutex
 import time
 from tensorflow import keras
 from keras import layers, optimizers, datasets
 
 
-class DeepLearning(QObject):
+class DeepLearning(QThread):
     # 自定义信号，负责主界面Log栏刷新
     textWritten = pyqtSignal(str)
 
-    def __init__(self):
-        super().__init__()
+    def __init__(self,parent=None):
+        super(DeepLearning,self).__init__(parent)
+        self.mutex=QMutex()
 
     # 数据集加载
     def run(self):
+        self.mutex.lock()
         try:
             t = time.perf_counter()
 
@@ -80,14 +82,17 @@ class DeepLearning(QObject):
                     if step % 1000 == 0:
                         text = acc_meter.result().numpy()
                         print(step, 'loss:', float(loss), 'acc:', acc_meter.result().numpy())
-                        #self.textWritten.emit(str(step) +'loss:'+loss +'acc:'+str(acc_meter.result().numpy()))
-                        self.textWritten.emit(str(step) + 'acc:' + str(acc_meter.result().numpy()))
-                        #self.textWritten.emit(str(step))
+                        mes = "【训练第:"+str(step)+"次】\n"+"损失函数"+str(round(float(loss),3))+"\n"+"模型识别准确率："+str(acc_meter.result().numpy())
+                        self.textWritten.emit(mes)
                         acc_meter.reset_states()
 
-            self.textWritten.emit(f'训练时间:{time.perf_counter() - t:.8f}s')
+            self.textWritten.emit(f'训练完成，总共耗时:{time.perf_counter() - t:.8f}s')
         except Exception as ex:
             print(ex)
+        self.mutex.unlock()
+
+
+
 
 
 
