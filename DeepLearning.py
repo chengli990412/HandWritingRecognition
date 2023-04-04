@@ -11,6 +11,8 @@ from keras import layers, optimizers, datasets
 class DeepLearning(QThread):
     # 自定义信号，负责主界面Log栏刷新
     textWritten = pyqtSignal(str)
+    # 自定义信号，负责主界面Mat绘画
+    drawMat = pyqtSignal(float,float,float,float)
 
     def __init__(self,parent=None):
         super(DeepLearning,self).__init__(parent)
@@ -53,7 +55,7 @@ class DeepLearning(QThread):
             x = tf.convert_to_tensor(train_images, dtype=tf.float32) / 255
             db = tf.data.Dataset.from_tensor_slices((x, train_labels))
             db = db.batch(100).repeat(20)
-            optimizer = optimizers.SGD(lr=0.02)
+            optimizer = optimizers.SGD(lr=0.01)
             acc_meter = keras.metrics.Accuracy()
             summary_writer = tf.summary.create_file_writer('tf_log')
             for step, (xx, yy) in enumerate(db):
@@ -72,6 +74,10 @@ class DeepLearning(QThread):
                     # 更新梯度参数
                     grads = tape.gradient(loss, Model.trainable_variables)
                     optimizer.apply_gradients(zip(grads, Model.trainable_variables))
+                    # 绘图
+                    if step % 100==0:
+                        self.drawMat.emit(step, float(loss),step,float(acc_meter.result().numpy()) )
+
                     # 参数存储，便于查看曲线图
                     with summary_writer.as_default():
                         tf.summary.scalar('train-loss', float(loss), step=step)
@@ -79,7 +85,7 @@ class DeepLearning(QThread):
                         # tf.summary.image('Training data', xx,step=step)
 
                     if step % 1000 == 0:
-                        mes = "【训练第:"+str(step)+"次】\n"+"损失函数"+str(round(float(loss),3))+"\n"+"模型识别准确率："+str(acc_meter.result().numpy())
+                        mes = "【训练第:"+str(step)+"次】\n"+"损失函数："+str(round(float(loss),3))+"\n"+"模型识别准确率："+str(acc_meter.result().numpy())
                         self.textWritten.emit(mes)
                         acc_meter.reset_states()
 

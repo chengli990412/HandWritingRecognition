@@ -11,14 +11,19 @@ import numpy as np
 
 
 class MyClass(QMainWindow, Ui_MainWindow):
-    Ver = "版本：1.0.0.4       更新日期：20230404"
+    Ver = "版本：1.0.0.5       更新日期：20230404"
     dl = DeepLearning()
+    xloss=[]
+    yloss=[]
+    xacc=[]
+    yacc=[]
 
     def __init__(self, parent=None):
         super(MyClass, self).__init__(parent=parent)
         self.init()
         # 绑定深度学习类中textWritten信号，此信号来刷新Log
         self.dl.textWritten.connect(self.write_text)
+        self.dl.drawMat.connect(self.DrawMat)
         # 刷新底部状态栏显示相关信息
         self.statusBar().showMessage(self.Ver)
 
@@ -34,11 +39,6 @@ class MyClass(QMainWindow, Ui_MainWindow):
         self.canvas = FC(self.fig)
         self.verticalLayout.addWidget(self.canvas)
         self.ax = self.fig.add_subplot(111)
-        self.ax.set(xlim=[0.5, 4.5], ylim=[-2, 8], title='Loss',
-               ylabel='Y-Axis', xlabel='X-Axis')
-
-
-
 
         # 训练开始按钮绑定
         self.Button_Train.clicked.connect(self.run)
@@ -47,17 +47,25 @@ class MyClass(QMainWindow, Ui_MainWindow):
 
     # 这里是对深度学习训练运行的调用
     def run(self):
+        # 初始化图标
+        self.ax.cla()
+        self.ax.set(xlim=[0, 12000], ylim=[0, 1], title='Loss',
+                    ylabel='Y-Axis', xlabel='X-Axis')
+        self.xloss.clear()
+        self.yloss.clear()
+
+        # 训练开始运行
         self.dl.start()
 
-    def DrawMat(self):
-        self.ax.cla()
-        x = np.linspace(0, 100, 100)
-        y = np.random.random(100)
-        self.ax.plot(x, y)
+    # 绘图事件
+    def DrawMat(self,xvalue,yvalue,xacc,yacc):
+        self.xloss.append(xvalue)
+        self.yloss.append(yvalue)
+        self.xacc.append(xacc)
+        self.yacc.append(yacc)
+        self.ax.plot(self.xloss, self.yloss, linewidth ='1', label ="test", color='#0000FF')
+        self.ax.plot(self.xacc, self.yacc, linewidth ='1', label ="test", color='#FFB6C1')
         self.canvas.draw()
-
-
-
 
     # Log记录
     def write_text(self, str):
@@ -67,8 +75,27 @@ class MyClass(QMainWindow, Ui_MainWindow):
 
 
 if __name__ == '__main__':
+    ['dark_amber.xml',
+     'dark_blue.xml',
+     'dark_cyan.xml',
+     'dark_lightgreen.xml',
+     'dark_pink.xml',
+     'dark_purple.xml',
+     'dark_red.xml',
+     'dark_teal.xml',
+     'dark_yellow.xml',
+     'light_amber.xml',
+     'light_blue.xml',
+     'light_cyan.xml',
+     'light_cyan_500.xml',
+     'light_lightgreen.xml',
+     'light_pink.xml',
+     'light_purple.xml',
+     'light_red.xml',
+     'light_teal.xml',
+     'light_yellow.xml']
     app = QApplication(sys.argv)
     Mc = MyClass()
-    apply_stylesheet(app, theme='light_cyan_500.xml')
+    apply_stylesheet(app, theme='dark_pink.xml')
     Mc.show()
     sys.exit(app.exec_())
