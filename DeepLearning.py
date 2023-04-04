@@ -56,7 +56,6 @@ class DeepLearning(QThread):
             optimizer = optimizers.SGD(lr=0.02)
             acc_meter = keras.metrics.Accuracy()
             summary_writer = tf.summary.create_file_writer('tf_log')
-            text = ''
             for step, (xx, yy) in enumerate(db):
                 with tf.GradientTape() as tape:
                     # 图像样本大小重置(-1, 28*28)
@@ -80,28 +79,14 @@ class DeepLearning(QThread):
                         # tf.summary.image('Training data', xx,step=step)
 
                     if step % 1000 == 0:
-                        text = acc_meter.result().numpy()
-                        print(step, 'loss:', float(loss), 'acc:', acc_meter.result().numpy())
                         mes = "【训练第:"+str(step)+"次】\n"+"损失函数"+str(round(float(loss),3))+"\n"+"模型识别准确率："+str(acc_meter.result().numpy())
                         self.textWritten.emit(mes)
                         acc_meter.reset_states()
 
-            self.textWritten.emit(f'训练完成，总共耗时:{time.perf_counter() - t:.8f}s')
+            self.textWritten.emit(f' 【训练完成】，总共耗时:{time.perf_counter() - t:.2f}s')
         except Exception as ex:
             print(ex)
         self.mutex.unlock()
-
-
-
-
-
-
-
-
-
-
-
-
 
 def SaveModel(model):
     model.save('Model/')
