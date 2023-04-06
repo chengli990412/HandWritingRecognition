@@ -18,10 +18,12 @@ class DeepLearning(QThread):
         super(DeepLearning,self).__init__(parent)
         self.mutex=QMutex()
 
+
     # 数据集加载
     def run(self):
         self.mutex.lock()
         try:
+            # 训练时间统计
             t = time.perf_counter()
 
             gpus = tf.config.experimental.list_physical_devices('GPU')
@@ -75,14 +77,13 @@ class DeepLearning(QThread):
                     grads = tape.gradient(loss, Model.trainable_variables)
                     optimizer.apply_gradients(zip(grads, Model.trainable_variables))
                     # 绘图
-                    if step % 100==0:
+                    if step % 100 == 0:
                         self.drawMat.emit(step, float(loss),step,float(acc_meter.result().numpy()) )
 
                     # 参数存储，便于查看曲线图
                     with summary_writer.as_default():
                         tf.summary.scalar('train-loss', float(loss), step=step)
                         tf.summary.scalar('test-acc', acc_meter.result().numpy(), step=step)
-                        # tf.summary.image('Training data', xx,step=step)
 
                     if step % 1000 == 0:
                         mes = "【训练第:"+str(step)+"次】\n"+"损失函数："+str(round(float(loss),3))+"\n"+"模型识别准确率："+str(acc_meter.result().numpy())
