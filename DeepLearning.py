@@ -1,11 +1,12 @@
-import numpy as np
-import os
 import gzip
-import tensorflow as tf
-from PyQt5.QtCore import QObject, pyqtSignal, QThread, QMutex
+import os
 import time
+
+import numpy as np
+import tensorflow as tf
+from PyQt5.QtCore import pyqtSignal, QThread, QMutex
+from keras import layers, optimizers
 from tensorflow import keras
-from keras import layers, optimizers, datasets
 
 
 class DeepLearning(QThread):
@@ -18,17 +19,17 @@ class DeepLearning(QThread):
         super(DeepLearning, self).__init__(parent)
         self.mutex = QMutex()
 
+        gpus = tf.config.experimental.list_physical_devices('GPU')
+        tf.config.experimental.set_visible_devices(gpus[0], 'GPU')
+        tf.config.experimental.set_memory_growth(gpus[0], True)
+        tf.device("/gpu:0")
+
     # 数据集加载
     def run(self):
         self.mutex.lock()
         try:
             # 训练时间统计
             t = time.perf_counter()
-
-            gpus = tf.config.experimental.list_physical_devices('GPU')
-            tf.config.experimental.set_visible_devices(gpus[0], 'GPU')
-            tf.config.experimental.set_memory_growth(gpus[0], True)
-            tf.device("/gpu:0")
 
             files = ['train-labels-idx1-ubyte.gz', 'train-images-idx3-ubyte.gz', 't10k-labels-idx1-ubyte.gz',
                      't10k-images-idx3-ubyte.gz']
@@ -93,6 +94,7 @@ class DeepLearning(QThread):
             self.textWritten.emit(f' 【训练完成】，总共耗时:{time.perf_counter() - t:.2f}s')
             Model.save(r'Model/model.h5')
             self.textWritten.emit(' 【模型保存】成功！')
+
         except Exception as ex:
             self.textWritten.emit(" 【ERROR】"+str(ex))
 

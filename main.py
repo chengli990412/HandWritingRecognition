@@ -3,7 +3,7 @@ import os
 import sys
 from datetime import datetime
 from PyQt5.QtGui import QIcon, QPixmap, QImage
-from PyQt5.QtWidgets import QApplication, QMainWindow
+from PyQt5.QtWidgets import QApplication, QMainWindow,QMessageBox
 from DeepLearning import DeepLearning
 from UIMain import Ui_MainWindow
 from qt_material import apply_stylesheet
@@ -13,8 +13,9 @@ import numpy as np
 import tensorflow as tf
 
 
+
 class MyClass(QMainWindow, Ui_MainWindow):
-    Ver = "版本：1.0.0.8       更新日期：20230407"
+    Ver = "版本：1.0.0.9       更新日期：20230407"
 
     # 深度学习类实例化
     dl = DeepLearning()
@@ -29,6 +30,8 @@ class MyClass(QMainWindow, Ui_MainWindow):
 
     # 显示图像索引
     image_index = 0
+    # 标志位，是否加载了模型
+    IsLoadModal=False
 
     def __init__(self, parent=None):
         super(MyClass, self).__init__(parent=parent)
@@ -75,12 +78,10 @@ class MyClass(QMainWindow, Ui_MainWindow):
 
         # 控件事件绑定
         self.Button_Train.clicked.connect(self.run)
-        self.Button_LoadModel.clicked.connect(self.DrawMat)
         self.spinBox.valueChanged.connect(self.SpinBoxValueChange)
         self.pushButton_LoadModel.clicked.connect(self.Load_RecognizeModel)
         self.pushButton_ImageRecognize.clicked.connect(self.RecognizeImage)
-
-
+        self.setCentralWidget(self.tabWidget)
 
     # 这里是对深度学习训练运行的调用
     def run(self):
@@ -121,17 +122,29 @@ class MyClass(QMainWindow, Ui_MainWindow):
     def SpinBoxValueChange(self):
         self.image_index = self.spinBox.value()
         self.ShowImage()
+        if self.checkBox.checkState():
+            self.RecognizeImage()
+
 
     # 加载训练好的模型
     def Load_RecognizeModel(self):
         try:
             self.newmodel = tf.keras.models.load_model('Model/model.h5', compile=False)
             self.write_text("模型加载成功")
+            self.IsLoadModal=True
         except Exception as ex:
             self.write_text("模型加载失败"+str(ex))
 
     # 图形预测
     def RecognizeImage(self):
+        if not self.IsLoadModal:
+            mes=QMessageBox()
+            mes.setWindowTitle("提示")
+            mes.setText("当前模型为空，请加载模型")
+            mes.setStandardButtons(QMessageBox.Ok)
+            mes.exec()
+            return
+
         # 预处理，将28*28转换成1*784
         xx = tf.reshape(self.train_images[self.image_index], (-1, 28 * 28))
         # 识别，这里输出的是0-9的概率分布
@@ -141,8 +154,6 @@ class MyClass(QMainWindow, Ui_MainWindow):
         # 使用 argmax() 函数查找最大值的索引[在本项目中为对于的识别数字]
         predicted_class_index = np.argmax(probabilities)
         self.write_text("  模型识别结果为："+str(predicted_class_index))
-
-
 
 if __name__ == '__main__':
     ['dark_amber.xml',
