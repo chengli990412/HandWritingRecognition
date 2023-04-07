@@ -2,8 +2,8 @@ import gzip
 import os
 import sys
 from datetime import datetime
-from PyQt5.QtGui import QIcon,QPixmap,QImage
-from PyQt5.QtWidgets import QApplication, QWidget, QMainWindow
+from PyQt5.QtGui import QIcon, QPixmap, QImage
+from PyQt5.QtWidgets import QApplication, QMainWindow
 from DeepLearning import DeepLearning
 from UIMain import Ui_MainWindow
 from qt_material import apply_stylesheet
@@ -12,9 +12,10 @@ from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FC
 import numpy as np
 
 
-
 class MyClass(QMainWindow, Ui_MainWindow):
-    Ver = "版本：1.0.0.6       更新日期：20230406"
+    Ver = "版本：1.0.0.7       更新日期：20230407"
+
+    # 深度学习类实例化
     dl = DeepLearning()
     # 损失函数函数图像X坐标
     xloss = []
@@ -30,6 +31,7 @@ class MyClass(QMainWindow, Ui_MainWindow):
         self.init()
         # 绑定深度学习类中textWritten信号，此信号来刷新Log
         self.dl.textWritten.connect(self.write_text)
+        # 绘图事件绑定
         self.dl.drawMat.connect(self.DrawMat)
         # 刷新底部状态栏显示相关信息
         self.statusBar().showMessage(self.Ver)
@@ -37,6 +39,7 @@ class MyClass(QMainWindow, Ui_MainWindow):
     # 初始化控件&&绑定控件事件
     def init(self):
         self.setupUi(self)
+        self.label.setStyleSheet("background-color:black")
         self.write_text(' 软件初始化成功')
         self.setWindowTitle('基于特征识别的手写数字识别')
         self.setWindowIcon(QIcon('./logo.ico'))
@@ -53,7 +56,6 @@ class MyClass(QMainWindow, Ui_MainWindow):
 
         self.pushButton.clicked.connect(self.ShowImage)
 
-
     # 这里是对深度学习训练运行的调用
     def run(self):
         # 初始化图标
@@ -67,7 +69,7 @@ class MyClass(QMainWindow, Ui_MainWindow):
         self.dl.start()
 
     # 绘图事件
-    def DrawMat(self,xvalue,yvalue,xacc,yacc):
+    def DrawMat(self, xvalue, yvalue, xacc, yacc):
         self.xloss.append(xvalue)
         self.yloss.append(yvalue)
         self.xacc.append(xacc)
@@ -82,6 +84,7 @@ class MyClass(QMainWindow, Ui_MainWindow):
         Mes = now.strftime("%H:%M:%S") + str
         self.textEdit.append(Mes)
 
+    # 显示图像按钮
     def ShowImage(self):
         files = ['train-labels-idx1-ubyte.gz', 'train-images-idx3-ubyte.gz', 't10k-labels-idx1-ubyte.gz',
                  't10k-images-idx3-ubyte.gz']
@@ -101,12 +104,13 @@ class MyClass(QMainWindow, Ui_MainWindow):
         with gzip.open(paths[3], 'rb') as imgpath:
             test_image = np.frombuffer(imgpath.read(), np.uint8, offset=16).reshape(len(test_label), 28, 28)
 
-        image_index=0
-        image=train_images[image_index]
+        image_index = 0
+        image = train_images[image_index]
 
-        qimage=QImage(image.data,image.shape[1],image.shape[0],QImage.Format_Grayscale8)
-        scaled_image=QPixmap.fromImage(qimage).scaled(300,300)
+        qimage = QImage(image.data, image.shape[1], image.shape[0], QImage.Format_Grayscale8)
+        scaled_image = QPixmap.fromImage(qimage).scaled(300, 300)
         self.label.setPixmap(scaled_image)
+
 
 if __name__ == '__main__':
     ['dark_amber.xml',

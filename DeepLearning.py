@@ -2,7 +2,7 @@ import numpy as np
 import os
 import gzip
 import tensorflow as tf
-from PyQt5.QtCore import QObject, pyqtSignal, QThread,QMutex
+from PyQt5.QtCore import QObject, pyqtSignal, QThread, QMutex
 import time
 from tensorflow import keras
 from keras import layers, optimizers, datasets
@@ -12,12 +12,11 @@ class DeepLearning(QThread):
     # 自定义信号，负责主界面Log栏刷新
     textWritten = pyqtSignal(str)
     # 自定义信号，负责主界面Mat绘画
-    drawMat = pyqtSignal(float,float,float,float)
+    drawMat = pyqtSignal(float, float, float, float)
 
-    def __init__(self,parent=None):
-        super(DeepLearning,self).__init__(parent)
-        self.mutex=QMutex()
-
+    def __init__(self, parent=None):
+        super(DeepLearning, self).__init__(parent)
+        self.mutex = QMutex()
 
     # 数据集加载
     def run(self):
@@ -78,7 +77,7 @@ class DeepLearning(QThread):
                     optimizer.apply_gradients(zip(grads, Model.trainable_variables))
                     # 绘图
                     if step % 100 == 0:
-                        self.drawMat.emit(step, float(loss),step,float(acc_meter.result().numpy()) )
+                        self.drawMat.emit(step, float(loss), step, float(acc_meter.result().numpy()))
 
                     # 参数存储，便于查看曲线图
                     with summary_writer.as_default():
@@ -86,14 +85,20 @@ class DeepLearning(QThread):
                         tf.summary.scalar('test-acc', acc_meter.result().numpy(), step=step)
 
                     if step % 1000 == 0:
-                        mes = "【训练第:"+str(step)+"次】\n"+"损失函数："+str(round(float(loss),3))+"\n"+"模型识别准确率："+str(acc_meter.result().numpy())
+                        mes = "【训练第:" + str(step) + "次】\n" + "损失函数：" + str(
+                            round(float(loss), 3)) + "\n" + "模型识别准确率：" + str(acc_meter.result().numpy())
                         self.textWritten.emit(mes)
                         acc_meter.reset_states()
 
             self.textWritten.emit(f' 【训练完成】，总共耗时:{time.perf_counter() - t:.2f}s')
+            Model.save(r'Model/model.h5')
+            self.textWritten.emit(' 【模型保存】成功！')
         except Exception as ex:
-            print(ex)
+            self.textWritten.emit(" 【ERROR】"+str(ex))
+
+        # 训练完成计时结束
         self.mutex.unlock()
 
-def SaveModel(model):
-    model.save('Model/')
+
+
+
