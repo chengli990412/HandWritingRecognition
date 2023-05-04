@@ -1,7 +1,6 @@
 import gzip
 import os
 import time
-
 import numpy as np
 import tensorflow as tf
 from PyQt5.QtCore import pyqtSignal, QThread, QMutex
@@ -49,16 +48,24 @@ class DeepLearning(QThread):
             with gzip.open(paths[3], 'rb') as imgpath:
                 test_image = np.frombuffer(imgpath.read(), np.uint8, offset=16).reshape(len(test_label), 28, 28)
 
-            Model = keras.Sequential([layers.Dense(256, activation='relu'),
+            Model = keras.Sequential([layers.Dense(256),
                                       layers.Dense(128, activation='relu'),
                                       layers.Dense(10)])
+            # 定义模型输入大小(Mnist数据集大小为28*28)
             Model.build(input_shape=(None, 28 * 28))
+            # 在控制台打印模型信息
             Model.summary()
+            # 将图像像素值归一化（0-1）
             x = tf.convert_to_tensor(train_images, dtype=tf.float32) / 255
+            # 数据切片
             db = tf.data.Dataset.from_tensor_slices((x, train_labels))
+            # Batch设置
             db = db.batch(100).repeat(20)
-            optimizer = optimizers.SGD(lr=0.01)
+            # 学习率设定
+            optimizer = optimizers.SGD(lr=0.03)
+            # 模型准确率
             acc_meter = keras.metrics.Accuracy()
+
             summary_writer = tf.summary.create_file_writer('tf_log')
             for step, (xx, yy) in enumerate(db):
                 with tf.GradientTape() as tape:
@@ -96,11 +103,7 @@ class DeepLearning(QThread):
             self.textWritten.emit(' 【模型保存】成功！')
 
         except Exception as ex:
-            self.textWritten.emit(" 【ERROR】"+str(ex))
+            self.textWritten.emit(" 【ERROR】" + str(ex))
 
         # 训练完成计时结束
         self.mutex.unlock()
-
-
-
-

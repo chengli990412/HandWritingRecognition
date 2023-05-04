@@ -15,7 +15,7 @@ import tensorflow as tf
 
 
 class MyClass(QMainWindow, Ui_MainWindow):
-    Ver = "版本：1.0.0.9       更新日期：20230407"
+    Ver = "版本：1.0.1.0       更新日期：20230504"
 
     # 深度学习类实例化
     dl = DeepLearning()
@@ -137,11 +137,13 @@ class MyClass(QMainWindow, Ui_MainWindow):
 
     # 图形预测
     def RecognizeImage(self):
+        # 是否加载模型标志位判断
         if not self.IsLoadModal:
             mes=QMessageBox()
             mes.setWindowTitle("提示")
             mes.setText("当前模型为空，请加载模型")
             mes.setStandardButtons(QMessageBox.Ok)
+            mes.setWindowIcon(QIcon('./logo.ico'))
             mes.exec()
             return
 

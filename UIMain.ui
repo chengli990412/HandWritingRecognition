@@ -17,17 +17,17 @@
    <widget class="QTabWidget" name="tabWidget">
     <property name="geometry">
      <rect>
-      <x>10</x>
-      <y>30</y>
-      <width>631</width>
-      <height>701</height>
+      <x>0</x>
+      <y>0</y>
+      <width>651</width>
+      <height>721</height>
      </rect>
     </property>
     <property name="tabShape">
      <enum>QTabWidget::Rounded</enum>
     </property>
     <property name="currentIndex">
-     <number>1</number>
+     <number>0</number>
     </property>
     <property name="elideMode">
      <enum>Qt::ElideNone</enum>
@@ -39,10 +39,10 @@
      <widget class="QSplitter" name="splitter">
       <property name="geometry">
        <rect>
-        <x>0</x>
-        <y>0</y>
-        <width>621</width>
-        <height>661</height>
+        <x>20</x>
+        <y>10</y>
+        <width>601</width>
+        <height>481</height>
        </rect>
       </property>
       <property name="layoutDirection">
@@ -58,20 +58,91 @@
         </property>
        </layout>
       </widget>
-      <widget class="QWidget" name="layoutWidget">
-       <layout class="QVBoxLayout" name="verticalLayout_3">
-        <property name="sizeConstraint">
-         <enum>QLayout::SetFixedSize</enum>
-        </property>
-        <item>
-         <widget class="QPushButton" name="Button_Train">
-          <property name="text">
-           <string>神经网络训练</string>
-          </property>
-         </widget>
-        </item>
-       </layout>
+     </widget>
+     <widget class="QPushButton" name="Button_Train">
+      <property name="geometry">
+       <rect>
+        <x>440</x>
+        <y>540</y>
+        <width>110</width>
+        <height>50</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>神经网络训练</string>
+      </property>
+     </widget>
+     <widget class="QGroupBox" name="groupBox">
+      <property name="geometry">
+       <rect>
+        <x>30</x>
+        <y>530</y>
+        <width>241</width>
+        <height>121</height>
+       </rect>
+      </property>
+      <property name="title">
+       <string>超参数设置</string>
+      </property>
+      <widget class="QLineEdit" name="lineEdit">
+       <property name="geometry">
+        <rect>
+         <x>120</x>
+         <y>40</y>
+         <width>91</width>
+         <height>21</height>
+        </rect>
+       </property>
       </widget>
+      <widget class="QLabel" name="label_3">
+       <property name="geometry">
+        <rect>
+         <x>20</x>
+         <y>40</y>
+         <width>54</width>
+         <height>12</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>学习率</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_4">
+       <property name="geometry">
+        <rect>
+         <x>20</x>
+         <y>80</y>
+         <width>54</width>
+         <height>12</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Batch值</string>
+       </property>
+      </widget>
+      <widget class="QLineEdit" name="lineEdit_2">
+       <property name="geometry">
+        <rect>
+         <x>120</x>
+         <y>80</y>
+         <width>91</width>
+         <height>21</height>
+        </rect>
+       </property>
+      </widget>
+     </widget>
+     <widget class="QPushButton" name="pushButton">
+      <property name="geometry">
+       <rect>
+        <x>440</x>
+        <y>600</y>
+        <width>110</width>
+        <height>50</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>训练手动终止</string>
+      </property>
      </widget>
     </widget>
     <widget class="QWidget" name="tab_2">
@@ -81,8 +152,8 @@
      <widget class="QLabel" name="label">
       <property name="geometry">
        <rect>
-        <x>130</x>
-        <y>40</y>
+        <x>150</x>
+        <y>70</y>
         <width>300</width>
         <height>300</height>
        </rect>
@@ -100,10 +171,10 @@
      <widget class="QPushButton" name="pushButton_ImageRecognize">
       <property name="geometry">
        <rect>
-        <x>190</x>
+        <x>140</x>
         <y>590</y>
-        <width>111</width>
-        <height>41</height>
+        <width>101</width>
+        <height>51</height>
        </rect>
       </property>
       <property name="text">
@@ -113,10 +184,10 @@
      <widget class="QPushButton" name="pushButton_LoadModel">
       <property name="geometry">
        <rect>
-        <x>300</x>
+        <x>310</x>
         <y>590</y>
         <width>111</width>
-        <height>41</height>
+        <height>51</height>
        </rect>
       </property>
       <property name="text">
