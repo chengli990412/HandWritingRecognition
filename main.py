@@ -15,7 +15,7 @@ import tensorflow as tf
 
 
 class MyClass(QMainWindow, Ui_MainWindow):
-    Ver = "版本：1.0.1.0       更新日期：20230504"
+    Ver = "版本：1.0.1.1       更新日期：20230504"
 
     # 深度学习类实例化
     dl = DeepLearning()
@@ -42,7 +42,6 @@ class MyClass(QMainWindow, Ui_MainWindow):
         self.dl.drawMat.connect(self.DrawMat)
         # 刷新底部状态栏显示相关信息
         self.statusBar().showMessage(self.Ver)
-
 
         # 这里读取图像
         files = ['train-labels-idx1-ubyte.gz', 'train-images-idx3-ubyte.gz', 't10k-labels-idx1-ubyte.gz',
@@ -78,6 +77,7 @@ class MyClass(QMainWindow, Ui_MainWindow):
 
         # 控件事件绑定
         self.Button_Train.clicked.connect(self.run)
+        self.Button_Stop.clicked.connect(self.stop)
         self.spinBox.valueChanged.connect(self.SpinBoxValueChange)
         self.pushButton_LoadModel.clicked.connect(self.Load_RecognizeModel)
         self.pushButton_ImageRecognize.clicked.connect(self.RecognizeImage)
@@ -94,6 +94,11 @@ class MyClass(QMainWindow, Ui_MainWindow):
 
         # 训练开始运行
         self.dl.start()
+
+    # 深度学习线程手动停止
+    def stop(self):
+        self.dl.terminate()
+        self.write_text("模型训练手动中止")
 
     # 绘图事件
     def DrawMat(self, xvalue, yvalue, xacc, yacc):

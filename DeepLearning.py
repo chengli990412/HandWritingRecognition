@@ -62,7 +62,7 @@ class DeepLearning(QThread):
             # Batch设置
             db = db.batch(100).repeat(20)
             # 学习率设定
-            optimizer = optimizers.SGD(lr=0.03)
+            optimizer = optimizers.SGD(learning_rate=0.03)
             # 模型准确率
             acc_meter = keras.metrics.Accuracy()
 
