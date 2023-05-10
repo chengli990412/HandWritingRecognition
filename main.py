@@ -66,7 +66,7 @@ class MyClass(QMainWindow, Ui_MainWindow):
         self.setupUi(self)
         self.label.setStyleSheet("background-color:black")
         self.write_text(' 软件初始化成功')
-        self.setWindowTitle('基于特征识别的手写数字识别')
+        self.setWindowTitle('基于特征提取的手写数字识别')
         self.setWindowIcon(QIcon('./logo.ico'))
 
         # 构建Matplolib，并添加到控件
@@ -122,6 +122,7 @@ class MyClass(QMainWindow, Ui_MainWindow):
         qimage = QImage(image.data, image.shape[1], image.shape[0], QImage.Format_Grayscale8)
         scaled_image = QPixmap.fromImage(qimage).scaled(300, 300)
         self.label.setPixmap(scaled_image)
+        # scaled_image.save("C:\\Users\\Cheng\\Desktop\\1\\"+str(self.image_index)+".jpg" )
 
     # SpinBox值改变事件，主要作用切换图像
     def SpinBoxValueChange(self):
@@ -184,6 +185,6 @@ if __name__ == '__main__':
      'light_yellow.xml']
     app = QApplication(sys.argv)
     Mc = MyClass()
-    apply_stylesheet(app, theme='light_pink.xml')
+    apply_stylesheet(app, theme='light_cyan_500.xml')
     Mc.show()
     sys.exit(app.exec_())
